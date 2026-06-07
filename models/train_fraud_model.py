@@ -30,8 +30,8 @@ def main():
 	dataset_df = spark.read.parquet(hdfs_features_path)
 
 	# Convert distributed Spark DataFrame to Pandas for local XGBoost training execution
-	raw_data = dataset_df.select("amount", "user_tx_count_1h", "user_avg_amount_30d", "is_amount_anomaly").toPandas()
-	spark.stop()  # Close spark cluster context as data is loaded into memory
+	raw_data = dataset_df.select("amount", "user_tx_count_1h", "user_avg_amount_30d", "is_fraudulent_claim").toPandas()
+	spark.stop() # Close spark cluster context as data is loaded into memory
 
 	if raw_data.empty:
 		print("❌ Error: The dataset is empty. Ensure your feature pipeline has fully written records to HDFS.")
@@ -39,7 +39,7 @@ def main():
 
 	# 2. Separate Core Input Features and Target Labels
 	X = raw_data[["amount", "user_tx_count_1h", "user_avg_amount_30d"]]
-	y = raw_data["is_amount_anomaly"]
+	y = raw_data["is_fraudulent_claim"]
 
 	print(f"📊 Dataset successfully structured. Total rows: {len(raw_data)}")
 	print(f"📉 Class Balance Profile - Legitimate: {len(y[y == 0])} | Potential Fraud: {len(y[y == 1])}")

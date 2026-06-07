@@ -46,14 +46,23 @@ def main():
 		.withColumn("user_tx_count_1h", F.count("amount").over(window_1h)) \
 		.withColumn("user_avg_amount_30d", F.round(F.avg("amount").over(window_30d), 2))
 
-	# 4. Deriving Anomaly Indicators
-	# Flag transactions that are 3x greater than the user's running 30-day average
+	# 4. Deriving Realistic Behavioral Fraud Indicators (Path B)
+	# Fraud is signaled by combining high 1-hour velocity with an elevated purchase amount,
+	# combined with a small random hash modifier to prevent a perfect mathematical split.
 	features_df = enriched_df.withColumn(
-		"is_amount_anomaly",
-		F.when(F.col("amount") > (F.col("user_avg_amount_30d") * 3), 1).otherwise(0)
+		"is_fraudulent_claim",
+		F.when(
+			(F.col("user_tx_count_1h") > 3) &
+			(F.col("amount") > (F.col("user_avg_amount_30d") * 1.5)) &
+			(F.rand(seed=42) > 0.15),  # 85% structured pattern
+			1
+		).otherwise(
+			F.when((F.col("amount") > 3000) & (F.rand(seed=42) > 0.4), 1).otherwise(0)  # High-value outliers
+		)
 	)
 
-	# 5. Export calculated vectors back to HDFS as an ML-ready analytical tier
+	# 5. Export calculated vectors back to HDFS (Update path target label column)
+	# Change the preview and selection to show our new target field: "is_fraudulent_claim"
 	hdfs_output_path = "hdfs://localhost:8020/user/hadoop/fraud_detection/engineered_features"
 	print(f"💾 Writing enriched feature matrices back to HDFS: {hdfs_output_path}")
 
@@ -62,10 +71,8 @@ def main():
 		.parquet(hdfs_output_path)
 
 	print("✅ Feature engineering calculation completed successfully!")
-
-	# Showcase a snippet of our engineered dataset vectors
 	features_df.select("timestamp", "user_id", "amount", "user_tx_count_1h", "user_avg_amount_30d",
-	                   "is_amount_anomaly").show(10, truncate=False)
+	                   "is_fraudulent_claim").show(10, truncate=False)
 
 	spark.stop()
 
