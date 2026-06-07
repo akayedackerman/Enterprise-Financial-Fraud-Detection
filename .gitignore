@@ -18,3 +18,5 @@ hadoop_datanode/
 *.log
 models/*.tar.gz
 *.pkl
+mlruns/
+mlflow.db
