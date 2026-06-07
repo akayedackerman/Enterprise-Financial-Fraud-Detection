@@ -47,6 +47,44 @@ services:
     ports:
       - "9864:9864"
 
+  # ------------------------------------------------------------------
+  # APPLICATION LAYER: Enterprise Financial Fraud App Nodes
+  # ------------------------------------------------------------------
+  fraud_producer:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.ingestion
+    container_name: fraud_producer
+    network_mode: "host"
+    restart: on-failure
+    depends_on:
+      - kafka
+
+  fraud_inference:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.inference
+    container_name: fraud_inference
+    network_mode: "host"
+    restart: on-failure
+    volumes:
+      - ./models:/app/models
+    depends_on:
+      - kafka
+      - namenode
+
+  fraud_dashboard:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dashboard
+    container_name: fraud_dashboard
+    network_mode: "host"
+    ports:
+      - "8501:8501"
+    restart: always
+    depends_on:
+      - kafka
+
 volumes:
   hadoop_namenode:
   hadoop_datanode:

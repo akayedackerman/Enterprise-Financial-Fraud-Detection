@@ -1,0 +1,27 @@
+# Use an optimized Python footprint base image
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Install Java 21 Runtime Environment (JRE) required for PySpark worker JVM execution paths
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    openjdk-21-jre-headless \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set up mandatory JAVA_HOME pointer paths for Java 21 environment mapping
+ENV JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+ENV PATH=$PATH:$JAVA_HOME/bin
+
+# Cache dependencies layers
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Bring over your model binaries and active streaming inference processing scripts
+COPY models/ /app/models/
+COPY processing/ /app/processing/
+
+ENV PYTHONUNBUFFERED=1
+
+# Initialize the live Spark streaming consumer firewall immediately
+CMD ["python", "processing/real_time_inference.py"]

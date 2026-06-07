@@ -1,0 +1,22 @@
+# Use an optimized, secure Python footprint base image
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Install native system build variables if needed
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Cache dependencies layer
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Bring over your core ingestion simulation script
+COPY ingestion/ /app/ingestion/
+
+# Set up an environmental fallback execution pointer
+ENV PYTHONUNBUFFERED=1
+
+# Fire up the simulator stream instantly on initialization
+CMD ["python", "ingestion/kafka_producer.py"]
