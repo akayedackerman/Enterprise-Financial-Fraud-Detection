@@ -17,3 +17,4 @@ hadoop_datanode/
 # Model and runtime logging exports
 *.log
 models/*.tar.gz
+*.pkl
