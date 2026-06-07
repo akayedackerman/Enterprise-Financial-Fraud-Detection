@@ -31,7 +31,7 @@ def generate_transaction():
 
 
 if __name__ == "__main__":
-	print("🚀 Kafka Transaction Simulator Online. Press Ctrl+C to terminate.")
+	print("Kafka Transaction Simulator Online. Press Ctrl+C to terminate.")
 	try:
 		while True:
 			tx_data = generate_transaction()
