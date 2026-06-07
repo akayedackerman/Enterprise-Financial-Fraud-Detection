@@ -2,14 +2,14 @@
 
 ### End-to-End Distributed Big Data, Real-Time Fraud Analytics & MLOps Platform
 
-![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Apache Kafka](https://img.shields.io/badge/Apache-Kafka-black)
-![Apache Spark](https://img.shields.io/badge/Apache-Spark-orange)
-![Hadoop](https://img.shields.io/badge/Hadoop-HDFS-yellow)
-![XGBoost](https://img.shields.io/badge/XGBoost-2.0.3-green)
-![MLflow](https://img.shields.io/badge/MLflow-MLOps-blue)
-![Docker](https://img.shields.io/badge/Docker-Containerized-blue)
-![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-red)
+[![Python](https://img.shields.io/badge/Python-3.10-blue)](https://www.python.org/)
+[![Apache Kafka](https://img.shields.io/badge/Apache-Kafka-black)](https://kafka.apache.org/)
+[![Apache Spark](https://img.shields.io/badge/Apache-Spark-orange)](https://spark.apache.org/)
+[![Hadoop](https://img.shields.io/badge/Hadoop-HDFS-yellow)](https://hadoop.apache.org/)
+[![XGBoost](https://img.shields.io/badge/XGBoost-2.0.3-green)](https://xgboost.readthedocs.io/)
+[![MLflow](https://img.shields.io/badge/MLflow-MLOps-blue)](https://mlflow.org/)
+[![Docker](https://img.shields.io/badge/Docker-Containerized-blue)](https://www.docker.com/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-red)](https://streamlit.io/)
 
 ---
 
@@ -302,7 +302,7 @@ Example:
 
 # 📈 Model Evaluation
 
-Replace with actual MLflow metrics.
+Current Metrics.
 
 | Metric | Score |
 |----------|----------|
@@ -551,7 +551,7 @@ Planned enhancements:
 
 **Akayed Md. Mazharul Islam**
 
-Undergraduate Student in Artificial Intelligence
+Major: Artificial Intelligence
 
 School of Electronic and Electrical Engineering
 
