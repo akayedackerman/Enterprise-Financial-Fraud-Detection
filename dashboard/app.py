@@ -67,9 +67,13 @@ if st.session_state.alerts_history:
 	total_risk_value.metric("Total Intercepted Risk Capital", f"${sum_value:,.2f}")
 	highest_risk_factor.metric("Highest Threat Probability", f"{max_prob:.2f}%")
 
-	display_df = df[["timestamp", "user_id", "amount", "merchant", "location", "fraud_probability"]]
+	# Style and render structural data table frames inside the active view layer
+	# .copy() eliminates the Pandas SettingWithCopyWarning
+	display_df = df[["timestamp", "user_id", "amount", "merchant", "location", "fraud_probability"]].copy()
 	display_df["fraud_probability"] = display_df["fraud_probability"].apply(lambda x: f"{round(x * 100, 2)}%")
-	table_placeholder.dataframe(display_df, use_container_width=True)
+
+	# Using width="stretch" aligns with the latest Streamlit specifications
+	table_placeholder.dataframe(display_df, width="stretch")
 else:
 	table_placeholder.info("🟢 Listening for live streaming security alerts... No fraud flags intercepted yet.")
 
