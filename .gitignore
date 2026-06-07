@@ -1,0 +1,19 @@
+# PyCharm project workspace files
+.idea/
+*.iml
+.DS_Store
+
+# Python build and cache artifacts
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Hadoop HDFS & Kafka Local Volume Mounts (Prevents massive multi-GB logs)
+volumes/
+hadoop_namenode/
+hadoop_datanode/
+.env
+
+# Model and runtime logging exports
+*.log
+models/*.tar.gz
