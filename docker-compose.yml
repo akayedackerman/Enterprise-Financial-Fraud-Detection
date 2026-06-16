@@ -54,6 +54,7 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.ingestion
+      network: host
     container_name: fraud_producer
     network_mode: "host"
     restart: on-failure
@@ -64,6 +65,7 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.inference
+      network: host
     container_name: fraud_inference
     network_mode: "host"
     restart: on-failure
@@ -77,6 +79,7 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.dashboard
+      network: host
     container_name: fraud_dashboard
     network_mode: "host"
     ports:
